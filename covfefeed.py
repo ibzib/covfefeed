@@ -49,7 +49,7 @@ def generateText(cfdist, word, max_length=140):
         suffix = word
         if word not in string.punctuation:
             suffix = ' ' + suffix
-        if len(output) + len(suffix) <= max_length:
+        if len(output) + len(suffix) <= max_length: # TODO fix character limit problems
             output += suffix
         else:
             break
@@ -77,12 +77,16 @@ def getTwitterApi():
       access_token_secret=access_token_secret)
     return api
 
-print 'Generating tweet...\n'
+print 'Loading tweets...'
 api = getTwitterApi()
 # TODO get a larger collection of tweets
 tweets = [s.text for s in api.GetUserTimeline(screen_name='@realDonaldTrump')]
-message = generateTweet(tweets)
-print ''
-response = raw_input('Tweet this? (y/N)\n')
-if response == 'y' or response == 'Y' or response == 'yes':
-    api.PostUpdate(message)
+while True:
+    print ''
+    message = generateTweet(tweets)
+    print ''
+    response = raw_input('Tweet this?\n[y]es\t[n]o\t[Q]uit\n')
+    if response == 'y' or response == 'Y' or response == 'yes':
+        api.PostUpdate(message)
+    elif response != 'n' and response != 'N' and response != 'no':
+        break
