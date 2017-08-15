@@ -37,7 +37,8 @@ class TweetRc(object):
         return self._config
 
 def generateText(cfdist, word, max_length=140):
-    output = word
+    webpage = "https://github.com/ibzib/covfefeed"
+    output = webpage + " " + word
     while True:
         choices = []
         if word in cfdist:
@@ -49,7 +50,7 @@ def generateText(cfdist, word, max_length=140):
         suffix = word
         if word not in string.punctuation:
             suffix = ' ' + suffix
-        if len(output) + len(suffix) <= max_length: # TODO fix character limit problems
+        if len(output) + len(suffix) <= max_length:
             output += suffix
         else:
             break
@@ -63,7 +64,7 @@ def generateTweet(tweets):
         bigrams += nltk.bigrams(text)
     cfd = nltk.ConditionalFreqDist(bigrams)
     cur_word = random.choice(random.choice(texts))
-    print generateText(cfd, cur_word)
+    return generateText(cfd, cur_word)
 
 def getTwitterApi():
     tweet_rc = TweetRc()
@@ -79,11 +80,12 @@ def getTwitterApi():
 
 print 'Loading tweets...'
 api = getTwitterApi()
-# TODO get a larger collection of tweets
+# TODO get a larger collection of tweets (maybe optional)
 tweets = [s.text for s in api.GetUserTimeline(screen_name='@realDonaldTrump')]
 while True:
-    print ''
     message = generateTweet(tweets)
+    print ''
+    print message
     print ''
     response = raw_input('Tweet this?\n[y]es\t[n]o\t[Q]uit\n')
     if response == 'y' or response == 'Y' or response == 'yes':
