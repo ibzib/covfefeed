@@ -8,6 +8,14 @@ import ConfigParser
 import os
 
 # from https://github.com/bear/python-twitter/blob/master/examples/tweet.py
+# example .tweetrc file:
+#
+#    [Tweet]
+#    consumer_key: *consumer_key*
+#    consumer_secret: *consumer_password*
+#    access_key: *access_key*
+#    access_secret: *access_password*
+#
 class TweetRc(object):
     def __init__(self):
         self._config = None
